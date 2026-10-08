@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Communication – Interactive MATLAB Programs</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:linear-gradient(135deg,#eef6ff,#f8fbff);
+    color:#1f2937;
+}
+.header{
+    background:linear-gradient(135deg,#123c69,#1769aa,#16a085);
+    color:white;
+    padding:28px 5%;
+    display:flex;
+    align-items:center;
+    gap:25px;
+    box-shadow:0 4px 15px #0003;
+}
+.profile{
+    width:125px;height:125px;border-radius:50%;
+    border:4px solid white;
+    object-fit:cover;
+    background:white;
+}
+.profile-box{text-align:center}
+.photo-label{
+    display:block;margin-top:8px;background:#ffffff22;
+    padding:7px 10px;border-radius:8px;cursor:pointer;font-size:12px;
+}
+.photo-label input{display:none}
+.header h1{margin:0 0 8px;font-size:30px}
+.header h2{margin:0 0 7px;font-size:20px;font-weight:normal}
+.header p{margin:3px 0;font-size:15px}
+
+.container{width:92%;max-width:1250px;margin:28px auto}
+.intro{
+    background:white;border-radius:16px;padding:22px;
+    box-shadow:0 3px 15px #00000012;margin-bottom:22px;
+}
+.intro h2{color:#123c69;margin-top:0}
+.tabs{
+    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;
+}
+.tab{
+    border:0;padding:13px 18px;border-radius:10px;
+    background:#dbeafe;color:#123c69;font-weight:bold;cursor:pointer;
+}
+.tab.active{background:#123c69;color:white}
+.program{display:none}
+.program.active{display:block}
+.grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+.card{
+    background:white;border-radius:16px;padding:20px;
+    box-shadow:0 3px 15px #00000012;
+}
+.card h2,.card h3{color:#123c69;margin-top:0}
+textarea{
+    width:100%;height:390px;border:1px solid #cbd5e1;
+    border-radius:10px;padding:15px;background:#111827;color:#e5e7eb;
+    font-family:Consolas,monospace;font-size:13px;line-height:1.5;
+    resize:vertical;
+}
+button.run{
+    margin-top:12px;border:0;border-radius:10px;padding:12px 22px;
+    background:#16a085;color:white;font-weight:bold;cursor:pointer;
+}
+button.run:hover{background:#12806b}
+.output{
+    background:#111827;color:#d1fae5;border-radius:10px;
+    padding:15px;min-height:180px;white-space:pre-wrap;
+    font-family:Consolas,monospace;font-size:13px;
+    overflow:auto;
+}
+.flow{
+    display:flex;align-items:center;justify-content:center;
+    flex-wrap:wrap;gap:8px;margin:20px 0;
+}
+.block{
+    padding:14px 18px;border-radius:12px;background:#e0f2fe;
+    border:2px solid #0284c7;text-align:center;font-weight:bold;
+    min-width:115px;
+}
+.arrow{font-size:25px;color:#64748b}
+.bits{
+    display:flex;flex-wrap:wrap;gap:5px;margin:10px 0;
+}
+.bit{
+    width:32px;height:32px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    background:#e5e7eb;font-weight:bold;border:1px solid #94a3b8;
+}
+.bit.one{background:#bfdbfe;color:#1e3a8a}
+.bit.zero{background:#f1f5f9;color:#475569}
+.label{font-weight:bold;color:#475569;margin-top:10px}
+.result-success{
+    margin-top:15px;padding:12px;border-radius:10px;
+    background:#dcfce7;color:#166534;font-weight:bold;
+}
+.result-error{
+    margin-top:15px;padding:12px;border-radius:10px;
+    background:#fee2e2;color:#991b1b;font-weight:bold;
+}
+.info{
+    background:#fff7ed;border-left:5px solid #f97316;
+    padding:13px;border-radius:8px;margin:15px 0;
+}
+footer{
+    text-align:center;padding:25px;background:#123c69;color:white;margin-top:35px;
+}
+@media(max-width:800px){
+    .grid{grid-template-columns:1fr}
+    .header{flex-direction:column;text-align:center}
+    .header h1{font-size:24px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= PROFILE HEADER ================= -->
+<header class="header">
+    <div class="profile-box">
+        <img id="profilePhoto" class="profile"
+             src="C:\Users\91779\OneDrive\Desktop\Feroza (2).jpg"
+             alt="Profile Photo">
+        <label class="photo-label">
+            Change Photo
+            <input type="file" accept="image/*" onchange="loadPhoto(event)">
+        </label>
+    </div>
+
+    <div>
+        <h1>Dr. Feroza D. Mirajkar</h1>
+        <h2>Assistant Professor</h2>
+        <p><b>Department of Electronics & Communication Engineering</b></p>
+        <p>Faculty of Engineering & Technology (FoET)</p>
+        <p>Khaja Bandanawaz University, Kalaburagi</p>
+    </div>
+</header>
+
+<div class="container">
+
+<section class="intro">
+    <h2>Digital Communication – Interactive MATLAB Programs</h2>
+    <p>
+        This interactive learning interface demonstrates four important
+        Digital Communication concepts: <b>Convolutional Coding, CRC,
+        Hamming Code and Huffman Coding</b>.
+    </p>
+    <div class="info">
+        <b>Important:</b> This HTML page provides a browser-based interactive
+        simulation and visual representation of the MATLAB programs.
+        The original MATLAB code is displayed for students, while the
+        Run button produces the corresponding educational output.
+    </div>
+</section>
+
+<div class="tabs">
+    <button class="tab active" onclick="showProgram(1)">1. Convolutional Code</button>
+    <button class="tab" onclick="showProgram(2)">2. CRC</button>
+    <button class="tab" onclick="showProgram(3)">3. Hamming Code</button>
+    <button class="tab" onclick="showProgram(4)">4. Huffman Coding</button>
+</div>
+
+<!-- ================= PROGRAM 1 ================= -->
+<section id="program1" class="program active">
+<div class="grid">
+
+<div class="card">
+<h2>1. Convolutional Encoding & Viterbi Decoding</h2>
+
+<textarea id="code1">
+clc;
+clear;
+close all;
+
+data = [1 0 1 1 0 1 0 0];
+
+disp('Original Data:');
+disp(data);
+
+trellis = poly2trellis(3,[7 5]);
+
+% Encoding
+encoded = convenc(data,trellis);
+
+disp('Encoded Data:');
+disp(encoded);
+
+% Viterbi Decoding
+decoded = vitdec(encoded,trellis,5,'trunc','hard');
+
+disp('Decoded Data:');
+disp(decoded);
+
+if isequal(data,decoded)
+    disp('Result: Encoding and Decoding Successful');
+else
+    disp('Result: Error in Decoding');
+end
+</textarea>
+<label class="label" for="input1">Input data bits (0/1, e.g. 10110100)</label>
+<input id="input1" value="10110100" maxlength="64" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-family:Consolas,monospace" />
+<button class="run" onclick="runProgram(1)">▶ Run Program</button>
+</div>
+
+<div class="card">
+<h2>Visual Representation</h2>
+<div class="flow">
+<div class="block">Input<br>Data</div>
+<div class="arrow">→</div>
+<div class="block">Convolutional<br>Encoder</div>
+<div class="arrow">→</div>
+<div class="block">Encoded<br>Bits</div>
+<div class="arrow">→</div>
+<div class="block">Viterbi<br>Decoder</div>
+<div class="arrow">→</div>
+<div class="block">Recovered<br>Data</div>
+</div>
+
+<div class="label">Original Data</div>
+<div id="bits1a" class="bits"></div>
+
+<div class="label">Encoded Data</div>
+<div id="bits1b" class="bits"></div>
+
+<div class="label">Decoded Data</div>
+<div id="bits1c" class="bits"></div>
+
+<h3>MATLAB Output</h3>
+<div id="output1" class="output">Click "Run Program" to execute the simulation...</div>
+<div id="status1"></div>
+</div>
+</div>
+</section>
+
+<!-- ================= PROGRAM 2 ================= -->
+<section id="program2" class="program">
+<div class="grid">
+
+<div class="card">
+<h2>2. Cyclic Redundancy Check (CRC)</h2>
+
+<textarea id="code2">
+clc;
+clear;
+
+data = [1 0 1 1 0 1 0 1];
+poly = [1 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 1];
+r = 16;
+
+temp = [data zeros(1,r)];
+
+for i=1:length(data)
+    if temp(i)
+        temp(i:i+r)=xor(temp(i:i+r),poly);
+    end
+end
+
+crc = temp(end-r+1:end);
+code = [data crc];
+
+disp('CRC:');
+disp(crc);
+
+disp('Codeword:');
+disp(code);
+
+% Without error
+temp=code;
+for i=1:length(data)
+    if temp(i)
+        temp(i:i+r)=xor(temp(i:i+r),poly);
+    end
+end
+disp('No-error remainder:');
+disp(temp(end-r+1:end));
+
+% With error
+code(5)=~code(5);
+temp=code;
+for i=1:length(data)
+    if temp(i)
+        temp(i:i+r)=xor(temp(i:i+r),poly);
+    end
+end
+disp('Error remainder:');
+disp(temp(end-r+1:end));
+</textarea>
+<label class="label" for="input2">Input data bits (0/1, e.g. 10110101)</label>
+<input id="input2" value="10110101" maxlength="128" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-family:Consolas,monospace" />
+<button class="run" onclick="runProgram(2)">▶ Run Program</button>
+</div>
+
+<div class="card">
+<h2>Visual Representation</h2>
+<div class="flow">
+<div class="block">Data<br>Bits</div>
+<div class="arrow">→</div>
+<div class="block">CRC<br>Generator</div>
+<div class="arrow">→</div>
+<div class="block">CRC<br>Bits</div>
+<div class="arrow">→</div>
+<div class="block">Codeword</div>
+<div class="arrow">→</div>
+<div class="block">Error<br>Check</div>
+</div>
+
+<div class="label">Data</div>
+<div id="bits2a" class="bits"></div>
+
+<div class="label">CRC</div>
+<div id="bits2b" class="bits"></div>
+
+<div class="label">Codeword</div>
+<div id="bits2c" class="bits"></div>
+
+<div class="label">Error Remainder</div>
+<div id="bits2d" class="bits"></div>
+
+<h3>MATLAB Output</h3>
+<div id="output2" class="output">Click "Run Program" to execute the simulation...</div>
+<div id="status2"></div>
+</div>
+</div>
+</section>
+
+<!-- ================= PROGRAM 3 ================= -->
+<section id="program3" class="program">
+<div class="grid">
+
+<div class="card">
+<h2>3. Hamming (7,4) Error Detection & Correction</h2>
+
+<textarea id="code3">
+clc;
+clear;
+
+data = [1 0 1 1];
+
+d1=data(1); d2=data(2);
+d3=data(3); d4=data(4);
+
+p1=mod(d1+d2+d4,2);
+p2=mod(d1+d3+d4,2);
+p4=mod(d2+d3+d4,2);
+
+code=[p1 p2 d1 p4 d2 d3 d4];
+
+disp('Original Data:');
+disp(data);
+
+disp('Encoded Hamming Code:');
+disp(code);
+
+% Introduce one-bit error
+received=code;
+received(5)=~received(5);
+
+disp('Received Data:');
+disp(received);
+
+s1=mod(received(1)+received(3)+received(5)+received(7),2);
+s2=mod(received(2)+received(3)+received(6)+received(7),2);
+s4=mod(received(4)+received(5)+received(6)+received(7),2);
+
+error=s1+2*s2+4*s4;
+
+disp('Error Position:');
+disp(error);
+
+if error~=0
+    received(error)=~received(error);
+end
+
+decoded=[received(3) received(5) received(6) received(7)];
+
+disp('Corrected Code:');
+disp(received);
+
+disp('Decoded Data:');
+disp(decoded);
+</textarea>
+<label class="label" for="input3">Input 4 data bits (e.g. 1011)</label>
+<input id="input3" value="1011" maxlength="4" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-family:Consolas,monospace" />
+<button class="run" onclick="runProgram(3)">▶ Run Program</button>
+</div>
+
+<div class="card">
+<h2>Visual Representation</h2>
+<div class="flow">
+<div class="block">4-bit<br>Data</div>
+<div class="arrow">→</div>
+<div class="block">Parity<br>Generation</div>
+<div class="arrow">→</div>
+<div class="block">7-bit<br>Hamming Code</div>
+<div class="arrow">→</div>
+<div class="block">Error<br>Detection</div>
+<div class="arrow">→</div>
+<div class="block">Correction</div>
+</div>
+
+<div class="label">Original Data</div>
+<div id="bits3a" class="bits"></div>
+
+<div class="label">Encoded Code</div>
+<div id="bits3b" class="bits"></div>
+
+<div class="label">Received Code – Error at Position 5</div>
+<div id="bits3c" class="bits"></div>
+
+<div class="label">Corrected Code</div>
+<div id="bits3d" class="bits"></div>
+
+<h3>MATLAB Output</h3>
+<div id="output3" class="output">Click "Run Program" to execute the simulation...</div>
+<div id="status3"></div>
+</div>
+</div>
+</section>
+
+<!-- ================= PROGRAM 4 ================= -->
+<section id="program4" class="program">
+<div class="grid">
+
+<div class="card">
+<h2>4. Huffman Coding</h2>
+
+<textarea id="code4">
+clc;
+clear;
+close all;
+
+symbols = {'A','B','C','D','E'};
+prob = [0.40 0.20 0.15 0.10 0.15];
+
+dict = huffmandict(symbols,prob);
+
+disp('Huffman Dictionary:');
+
+for i=1:length(symbols)
+    fprintf('%s : ',symbols{i});
+    disp(dict{i,2});
+end
+
+msg = {'A','B','A','C','D','A','E','B','A'};
+
+encoded = huffmanenco(msg,dict);
+decoded = huffmandeco(encoded,dict);
+
+disp('Original Message:');
+disp(msg);
+
+disp('Encoded Data:');
+disp(encoded);
+
+disp('Decoded Message:');
+disp(decoded);
+
+avg_length=0;
+for i=1:length(prob)
+    avg_length=avg_length+prob(i)*length(dict{i,2});
+end
+
+fprintf('Average Code Length = %.2f bits/symbol\n',avg_length);
+</textarea>
+<label class="label" for="input4">Message using A, B, C, D, E (e.g. ABACDAEBA)</label>
+<input id="input4" value="ABACDAEBA" maxlength="100" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-family:Consolas,monospace;text-transform:uppercase" />
+<button class="run" onclick="runProgram(4)">▶ Run Program</button>
+</div>
+
+<div class="card">
+<h2>Visual Representation</h2>
+<div class="flow">
+<div class="block">Symbols +<br>Probabilities</div>
+<div class="arrow">→</div>
+<div class="block">Huffman<br>Tree</div>
+<div class="arrow">→</div>
+<div class="block">Variable<br>Length Codes</div>
+<div class="arrow">→</div>
+<div class="block">Encoded<br>Message</div>
+<div class="arrow">→</div>
+<div class="block">Decoded<br>Message</div>
+</div>
+
+<div class="label">Huffman Dictionary</div>
+<div class="bits" style="display:block">
+A → 1<br>
+B → 000<br>
+C → 010<br>
+D → 011<br>
+E → 001
+</div>
+
+<div class="label">Message</div>
+<div class="bits" style="display:block">
+A B A C D A E B A
+</div>
+
+<div class="label">Encoded Bits</div>
+<div id="bits4a" class="bits"></div>
+
+<h3>MATLAB Output</h3>
+<div id="output4" class="output">Click "Run Program" to execute the simulation...</div>
+<div id="status4"></div>
+</div>
+</div>
+</section>
+
+</div>
+
+<footer>
+    Digital Communication Interactive Learning Interface<br>
+    Dr. Feroza D. Mirajkar | Department of E&CE | FoET | Khaja Bandanawaz University
+</footer>
+
+<script>
+function loadPhoto(event){
+    const file=event.target.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=e=>document.getElementById("profilePhoto").src=e.target.result;
+    reader.readAsDataURL(file);
+}
+function showProgram(n){
+    document.querySelectorAll(".program").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    document.getElementById("program"+n).classList.add("active");
+    document.querySelectorAll(".tab")[n-1].classList.add("active");
+}
+function drawBits(id,arr){
+    const box=document.getElementById(id); box.innerHTML="";
+    arr.forEach(b=>{const span=document.createElement("span");span.className="bit "+(String(b)==="1"?"one":"zero");span.textContent=b;box.appendChild(span);});
+}
+function showError(n,msg){
+    document.getElementById('output'+n).textContent='Input error: '+msg;
+    document.getElementById('status'+n).innerHTML='<div class="result-error">Please correct the input and run again.</div>';
+}
+function bitsFromInput(id,min,max){
+    const raw=document.getElementById(id).value.trim();
+    if(!/^[01]+$/.test(raw)) throw new Error('Enter binary digits only (0 and 1).');
+    if(raw.length<min||raw.length>max) throw new Error('Enter between '+min+' and '+max+' bits.');
+    return raw.split('').map(Number);
+}
+function runProgram(n){try{if(n===1)runConv();if(n===2)runCRC();if(n===3)runHamming();if(n===4)runHuffman();}catch(e){showError(n,e.message||String(e));}}
+function runConv(){
+    const data=bitsFromInput('input1',1,64), encoded=[];
+    // Rate-1/2 convolutional encoder, constraint length 3, generators [7,5] (octal).
+    let s1=0,s2=0;
+    data.forEach(bit=>{encoded.push(bit^s1^s2);encoded.push(bit^s2);s2=s1;s1=bit;});
+    // Viterbi decoding for the noiseless encoded stream.
+    let paths=[{state:0, bits:[], metric:0}];
+    for(let i=0;i<encoded.length;i+=2){
+      const pair=encoded.slice(i,i+2), next=[];
+      for(let st=0;st<4;st++){
+        const prev1=(st>>1)&1, prev2=st&1;
+        for(let bit=0;bit<=1;bit++){
+          const ns=((bit<<1)|prev1), out=[bit^prev1^prev2,bit^prev2];
+          // Find the prior path whose state is the current predecessor state.
+          const priorState=((prev1<<1)|prev2), prior=paths.find(p=>p.state===priorState);
+          if(prior){const metric=prior.metric+(out[0]!==pair[0])+(out[1]!==pair[1]);next.push({state:ns,bits:prior.bits.concat(bit),metric});}
+        }
+      }
+      const best={};next.forEach(p=>{if(!best[p.state]||p.metric<best[p.state].metric)best[p.state]=p;});paths=Object.values(best);
+    }
+    const best=paths.sort((a,b)=>a.metric-b.metric)[0], decoded=best?best.bits:data.slice();
+    drawBits('bits1a',data);drawBits('bits1b',encoded);drawBits('bits1c',decoded);
+    document.getElementById('output1').textContent='Original Data:\n'+data.join(' ')+'\n\nEncoded Data:\n'+encoded.join(' ')+'\n\nDecoded Data:\n'+decoded.join(' ')+'\n\nResult: '+(data.join('')===decoded.join('')?'Encoding and Decoding Successful':'Check decoding result');
+    document.getElementById('status1').innerHTML='<div class="'+(data.join('')===decoded.join('')?'result-success':'result-error')+'">'+(data.join('')===decoded.join('')?'✓ Decoded data matches the input.':'Decoded data differs from the input.')+'</div>';
+}
+function divideCRC(bits,poly){
+    const temp=bits.slice();
+    for(let i=0;i<=temp.length-poly.length;i++) if(temp[i]===1) for(let j=0;j<poly.length;j++) temp[i+j]^=poly[j];
+    return temp.slice(temp.length-(poly.length-1));
+}
+function runCRC(){
+    const data=bitsFromInput('input2',1,128), poly=[1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1];
+    const appended=data.concat(Array(poly.length-1).fill(0)), crc=divideCRC(appended,poly), code=data.concat(crc), noErr=divideCRC(code,poly);
+    const damaged=code.slice(); if(damaged.length>4)damaged[4]^=1;else damaged[damaged.length-1]^=1;
+    const errRem=divideCRC(damaged,poly);
+    drawBits('bits2a',data);drawBits('bits2b',crc);drawBits('bits2c',code);drawBits('bits2d',errRem);
+    document.getElementById('output2').textContent='Generator polynomial: x^16 + x^12 + x^5 + 1 (16-bit CRC)\nData:\n'+data.join(' ')+'\n\nCRC bits:\n'+crc.join(' ')+'\n\nCodeword:\n'+code.join(' ')+'\n\nNo-error remainder:\n'+noErr.join(' ')+'\n\nRemainder after introducing one bit error:\n'+errRem.join(' ');
+    document.getElementById('status2').innerHTML='<div class="result-success">✓ No-error remainder is '+(noErr.every(x=>x===0)?'all zeros':'non-zero')+'; the introduced error gives a '+(errRem.some(x=>x!==0)?'non-zero':'zero')+' remainder.</div>';
+}
+function runHamming(){
+    const data=bitsFromInput('input3',4,4),[d1,d2,d3,d4]=data;
+    const p1=(d1+d2+d4)%2,p2=(d1+d3+d4)%2,p4=(d2+d3+d4)%2,code=[p1,p2,d1,p4,d2,d3,d4];
+    const received=code.slice();received[4]^=1;
+    const s1=(received[0]+received[2]+received[4]+received[6])%2;
+    const s2=(received[1]+received[2]+received[5]+received[6])%2;
+    const s4=(received[3]+received[4]+received[5]+received[6])%2;
+    const errorPos=s1+2*s2+4*s4,corrected=received.slice();if(errorPos)corrected[errorPos-1]^=1;
+    const decoded=[corrected[2],corrected[4],corrected[5],corrected[6]];
+    drawBits('bits3a',data);drawBits('bits3b',code);drawBits('bits3c',received);drawBits('bits3d',corrected);
+    document.getElementById('output3').textContent='Original Data:\n'+data.join(' ')+'\n\nEncoded Hamming Code:\n'+code.join(' ')+'\n\nReceived Data (one-bit error introduced at position 5):\n'+received.join(' ')+'\n\nSyndrome (s4 s2 s1): '+s4+' '+s2+' '+s1+'\nError Position: '+errorPos+'\n\nCorrected Code:\n'+corrected.join(' ')+'\n\nDecoded Data:\n'+decoded.join(' ');
+    document.getElementById('status3').innerHTML='<div class="result-success">✓ Error at position '+errorPos+' corrected; decoded data '+(decoded.join('')===data.join('')?'matches':'does not match')+' input.</div>';
+}
+function runHuffman(){
+    const msg=document.getElementById('input4').value.trim().toUpperCase().replace(/\s/g,'');
+    if(!msg||!/^[ABCDE]+$/.test(msg))throw new Error('Enter a non-empty message containing only A, B, C, D, and E.');
+    const dict={A:'1',B:'000',C:'010',D:'011',E:'001'}, codes=msg.split('').map(ch=>dict[ch]), encoded=codes.join('');
+    let decoded='',pos=0;
+    while(pos<encoded.length){let found=false;for(const ch of Object.keys(dict)){if(encoded.startsWith(dict[ch],pos)){decoded+=ch;pos+=dict[ch].length;found=true;break;}}if(!found)throw new Error('The encoded bit stream could not be decoded.');}
+    drawBits('bits4a',encoded.split('').map(Number));
+    document.getElementById('output4').textContent='Huffman Dictionary:\nA : 1\nB : 0 0 0\nC : 0 1 0\nD : 0 1 1\nE : 0 0 1\n\nOriginal Message:\n'+msg.split('').join(' ')+'\n\nEncoded Data:\n'+encoded.split('').join(' ')+'\n\nDecoded Message:\n'+decoded.split('').join(' ')+'\n\nEncoded length = '+encoded.length+' bits\nAverage length for this message = '+(encoded.length/msg.length).toFixed(2)+' bits/symbol';
+    document.getElementById('status4').innerHTML='<div class="result-success">✓ Message encoded and decoded '+(decoded===msg?'successfully.':'with a mismatch.')+'</div>';
+}
+// Do not run any program automatically: students choose inputs and click Run Program.
+</script>
+
+</body>
+</html>
